@@ -132,6 +132,7 @@ def show_end_screen(game_score):
     end_menu.add.button("Quit Game", pygame_menu.events.EXIT)
     end_menu.mainloop(win)
 
+
 def game_loop():
     cell_size = 40
     cell_number = 15
@@ -143,7 +144,16 @@ def game_loop():
     pygame.time.set_timer(SCREEN_UPDATE, 150)
     screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 
-    game_scene = GameScene(screen, SCREEN_UPDATE, cell_number, cell_size, game_font, apple, clock, player_name)
+    game_scene = GameScene(
+        screen,
+        SCREEN_UPDATE,
+        cell_number,
+        cell_size,
+        game_font,
+        apple,
+        clock,
+        player_name,
+    )
     score = game_scene.loop()
     show_end_screen(score)
 
