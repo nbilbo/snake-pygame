@@ -11,6 +11,7 @@ class GameScene:
         self.game_started = False
 
         self.screen = screen
+        self.SCREEN_UPDATE = SCREEN_UPDATE
         self.cell_number = cell_number
         self.cell_size = cell_size
         self.game_font = game_font
@@ -20,6 +21,7 @@ class GameScene:
         self.snake = Snake()
         self.fruit = Fruit()
 
+    def loop(self):
         while not self.game_over:
         # Processando os eventos do Pygame
             for event in pygame.event.get():
@@ -29,7 +31,7 @@ class GameScene:
                     sys.exit()
 
                 # Verificando se o evento de atualização da tela ocorreu (150 ms passaram)
-                if event.type == SCREEN_UPDATE and self.game_started:
+                if event.type == self.SCREEN_UPDATE and self.game_started:
                     self.update()  # Atualizando o jogo
 
                 # Verificando se alguma tecla foi pressionada
@@ -50,17 +52,19 @@ class GameScene:
                         if self.snake.direction.x != 1:
                             self.snake.direction = Vector2(-1, 0)
 
-	# Preenchendo a tela com a cor de fundo
+	        # Preenchendo a tela com a cor de fundo
             self.screen.fill((175, 215, 70))
 
-	# Desenhando os elementos do jogo na tela
+	        # Desenhando os elementos do jogo na tela
             self.draw_elements()
 
-	# Atualizando a tela
+	        # Atualizando a tela
             pygame.display.update()
 
-	# Limitando o número de frames por segundo (FPS) para 60
+	        # Limitando o número de frames por segundo (FPS) para 60
             self.clock.tick(60)
+
+        return self.get_score()
 
 	# Método para atualizar o estado do jogo a cada frame
     def update(self):
@@ -140,4 +144,7 @@ class GameScene:
         game_score_rect = game_score_surface.get_rect()
         game_score_rect.midtop = (400, 15)
         self.screen.blit(game_score_surface, game_score_rect)
+
+    def get_score(self):
+        return str(len(self.snake.body) - 3)
 

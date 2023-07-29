@@ -26,7 +26,7 @@ Game difficulty is assigned the following values:
 * Medium = 50
 * Hard = 100
 """
-difficulty = 25
+difficulty = 500
 win = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption("Snake Game by Shehan Atukorala")
 clock = pygame.time.Clock()
@@ -101,14 +101,14 @@ def show_start_screen():
         width=display_width,
         height=display_height,
         title="Welcome to Snake Game!",
-        theme=pygame_menu.themes.THEME_BLUE,
+        theme=pygame_menu.themes.THEME_DARK,
     )
     start_menu.add.text_input("Your Name: ", default="Guest", onchange=set_player_name)
-    start_menu.add.selector(
-        "Difficulty: ",
-        [("Easy", 1), ("Medium", 2), ("Hard", 3)],
-        onchange=set_game_difficulty,
-    )
+    # start_menu.add.selector(
+    #     "Difficulty: ",
+    #     [("Easy", 1), ("Medium", 2), ("Hard", 3)],
+    #     onchange=set_game_difficulty,
+    # )
     start_menu.add.button("Play", game_loop)
     start_menu.add.button("Quit", pygame_menu.events.EXIT)
     if default_player_name:
@@ -125,7 +125,7 @@ def show_end_screen(game_score):
         width=display_width,
         height=display_height,
         title="Game Over",
-        theme=pygame_menu.themes.THEME_BLUE,
+        theme=pygame_menu.themes.THEME_DARK,
     )
     end_menu.add.label("Your Score:" + str(game_score))
     end_menu.add.button("Replay Game", replay_game)
@@ -142,8 +142,11 @@ def game_loop():
     SCREEN_UPDATE = pygame.USEREVENT
     pygame.time.set_timer(SCREEN_UPDATE, 150)
     screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
-    GameScene(screen, SCREEN_UPDATE, cell_number, cell_size, game_font, apple, clock, player_name)
-    screen.fill('black')
+
+    game_scene = GameScene(screen, SCREEN_UPDATE, cell_number, cell_size, game_font, apple, clock, player_name)
+    score = game_scene.loop()
+    show_end_screen(score)
+
 
 def _game_loop():
     x = display_width / 2
