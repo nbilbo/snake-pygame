@@ -144,7 +144,6 @@ def game_loop():
     screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
     GameScene(screen, SCREEN_UPDATE, cell_number, cell_size, game_font, apple, clock, player_name)
     screen.fill('black')
-    show_end_screen()
 
 def _game_loop():
     x = display_width / 2

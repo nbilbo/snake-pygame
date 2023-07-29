@@ -7,6 +7,9 @@ from snake import Snake, Fruit
 class GameScene:
     def __init__(self, screen, SCREEN_UPDATE, cell_number, cell_size, game_font, apple, clock, player_name):
 		# Criando instâncias das classes da cobra e das maçãs
+        self.game_over = False
+        self.game_started = False
+
         self.screen = screen
         self.cell_number = cell_number
         self.cell_size = cell_size
@@ -17,7 +20,7 @@ class GameScene:
         self.snake = Snake()
         self.fruit = Fruit()
 
-        while True:
+        while not self.game_over:
         # Processando os eventos do Pygame
             for event in pygame.event.get():
                 # Verificando se o jogador fechou a janela do jogo
@@ -26,12 +29,14 @@ class GameScene:
                     sys.exit()
 
                 # Verificando se o evento de atualização da tela ocorreu (150 ms passaram)
-                if event.type == SCREEN_UPDATE:
+                if event.type == SCREEN_UPDATE and self.game_started:
                     self.update()  # Atualizando o jogo
 
                 # Verificando se alguma tecla foi pressionada
                 if event.type == pygame.KEYDOWN:
                     # Mudando a direção da cobra com base na tecla pressionada pelo jogador
+                    self.game_started = True
+
                     if event.key == pygame.K_UP:
                         if self.snake.direction.y != 1:
                             self.snake.direction = Vector2(0, -1)
@@ -59,9 +64,10 @@ class GameScene:
 
 	# Método para atualizar o estado do jogo a cada frame
     def update(self):
-        self.snake.move_snake()  # Movendo a cobra
-        self.check_collision()   # Verificando colisões
-        self.check_fail()        # Verificando se o jogo terminou
+        if not self.game_over:
+            self.snake.move_snake()  # Movendo a cobra
+            self.check_collision()   # Verificando colisões
+            self.check_fail()        # Verificando se o jogo terminou
 
 	# Método para desenhar os elementos do jogo na tela
     def draw_elements(self):
@@ -79,18 +85,23 @@ class GameScene:
 
 	# Método para verificar se o jogo terminou devido à colisão da cobra com as bordas da tela ou consigo mesma
     def check_fail(self):
-		# Verificando colisão com as bordas da tela
-        if not 0 <= self.snake.body[0].x < self.cell_number or not 0 <= self.snake.body[0].y < self.cell_number:
-            self.game_over()
+        if not self.game_started:
+            return 
 
-		# Verificando colisão com o próprio corpo
+        # Verificando colisão com as bordas da tela
+        if not 0 <= self.snake.body[0].x < self.cell_number or not 0 <= self.snake.body[0].y < self.cell_number:
+            self.game_over = True
+
+        # Verificando colisão com o próprio corpo
         for block in self.snake.body[1:]:
             if block == self.snake.body[0]:
-                self.game_over()
+                self.game_over = True
 
 	# Método chamado quando o jogo termina
     def game_over(self):
         self.snake.reset()  # Reiniciando a cobra
+        self.game_over = True
+        self.game_started = False
 
 	# Método para desenhar o fundo da tela com quadrados verdes simulando grama.
     def draw_grass(self):
