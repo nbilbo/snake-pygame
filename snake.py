@@ -2,8 +2,9 @@
 import pygame, sys, random
 from pygame.math import Vector2
 
+
 # Definindo a classe da cobra
-class SNAKE:
+class Snake:
 	def __init__(self):
 		# Inicialização da cobra com três blocos em uma posição inicial fixa (5, 10), (4, 10) e (3, 10)
 		self.body = [Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)]
@@ -120,7 +121,7 @@ class SNAKE:
 		self.direction = Vector2(0, 0)
 
 # Definindo a classe das maçãs
-class FRUIT:
+class Fruit:
 	def __init__(self):
 		self.randomize()
 
@@ -141,7 +142,7 @@ class MAIN:
 	def __init__(self):
 		# Criando instâncias das classes da cobra e das maçãs
 		self.snake = SNAKE()
-		self.fruit = FRUIT()
+		self.fruit = Fruit()
 
 	# Método para atualizar o estado do jogo a cada frame
 	def update(self):
@@ -213,7 +214,7 @@ class MAIN:
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 cell_size = 40
-cell_number = 20
+cell_number = 15
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()
 apple = pygame.image.load('Graphics/apple.png').convert_alpha()
@@ -224,9 +225,10 @@ SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 150)
 
 # Instanciando a classe MAIN para criar o jogo.
-main_game = MAIN()
+# main_game = MAIN()
 
 # Loop principal do jogo
+"""
 while True:
 	# Processando os eventos do Pygame
 	for event in pygame.event.get():
@@ -266,3 +268,4 @@ while True:
 
 	# Limitando o número de frames por segundo (FPS) para 60
 	clock.tick(60)
+"""
